@@ -113,7 +113,7 @@ with col2:
                 border: 2px solid #F2A88D; 
                 border-radius: 10px; 
                 padding: 10px; 
-                text-align: center'> con {max_cantidad_municipio} Reportes</h3><br>""", 
+                text-align: center'> Delitos Reportados<br> {max_cantidad_municipio} </h3><br>""", 
                 unsafe_allow_html=True)
 
 
