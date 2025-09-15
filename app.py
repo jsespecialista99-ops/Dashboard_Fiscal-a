@@ -1,6 +1,7 @@
-<<<<<<< HEAD
 import pandas as pd
 import streamlit as st
+import plotly.express as px
+
 
 url = 'https://github.com/jsespecialista99-ops/IA/raw/refs/heads/main/datos_generales_ficticios.csv'
 df = pd.read_csv(url, sep=';', encoding='utf-8')
@@ -64,7 +65,55 @@ st.write(f'# Municipio Top Delitos: {max_municipio}')
 # etapa_mas_frecuente = df2['ETAPA'].value_counts().index[0]
 etapa_mas_frecuente = df2['ETAPA'].value_counts().index[0].upper()
 # ya que value_counts() genera un dataframe ordenado, traigo solo el primer valor .iloc[0] 
-etapa_mas_frecuente = df2['ETAPA'].value_counts().iloc[0]
+cant_etapa_mas_frecuente = df2['ETAPA'].value_counts().iloc[0]
+
+
+# Construir página
+st.set_page_config(page_title='Dashboard de Delitos - Fiscalía', layout='wide')
+st.markdown(
+    """
+    <style>
+    .block-container {
+        padding: 1rem 2rem 2rem 2rem;
+        max-width: 1600px;
+    }    
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.image('Encabezado/Encabezado.png', use_container_width=True)
+
+# gráfico de barras apiladas
+
+st.subheader('Delitos por Departamento')
+df_delitos = df.groupby(['DEPARTAMENTO', 'DELITO']).size().reset_index(name='conteo')
+fig = px.bar(df_delitos, x='DEPARTAMENTO', y='conteo', color='DELITO', title='Delitos por Departamento', barmode='stack')
+st.plotly_chart(fig, key='bar_departamentos')
+fig.update_layout(showlegend=False, height=400)
+
+# Tarjetas
+st.markdown(f"""<h3 style='color:#F2A88D;
+            background-color:#FFF6F5;
+            border: 2px solid #F2A88D; 
+            border-radius: 10px; 
+            padding: 10px; 
+            text-align: center'> Municipio con más delitos: {max_municipio}</h3><br>""", 
+            unsafe_allow_html=True)
+
+st.markdown(f"""<h3 style='color:#F2A88D;
+            background-color:#FFF6F5;
+            border: 2px solid #F2A88D; 
+            border-radius: 10px; 
+            padding: 10px; 
+            text-align: center'> con {max_cantidad_municipio} Reportes</h3><br>""", 
+            unsafe_allow_html=True)
+
+
+st.subheader(f'Municipio con más delitos: {max_municipio} con {max_cantidad_municipio} Reportes')
+st.subheader(f'{etapa_mas_frecuente} tiene {cant_etapa_mas_frecuente} registros')
+
+
 
 
 
@@ -90,9 +139,11 @@ st.subheader(f'Etapa más frecuente: {etapa_mas_frecuente} con {etapa_mas_frecue
 st.subheader('Comportamiento Delitos')
 delitos = df2['DELITO'].value_counts()
 st.bar_chart(delitos)
-=======
+
+
 import pandas as pd
 import streamlit as st
+import plotly.express as px
 
 url = 'https://github.com/jsespecialista99-ops/IA/raw/refs/heads/main/datos_generales_ficticios.csv'
 df = pd.read_csv(url, sep=';', encoding='utf-8')
@@ -125,8 +176,7 @@ st.subheader('Tipo de delito')
 delitos = df['DELITO'].value_counts()
 st.bar_chart(delitos)
 
-
-
+### Ejercicio 2
 
 import pandas as pd
 import streamlit as st
@@ -165,4 +215,4 @@ st.write(f'### Municipio con más delitos: {max_municipio} con {max_cantidad_mun
 #st.write(f'### Cantidad de Eventos: {max_cantidad_municipio}')
 
 #st.subheader('Tipo de delito')
->>>>>>> cc90e13551cca197f36dd3cadf1c379ca848a5f0
+
