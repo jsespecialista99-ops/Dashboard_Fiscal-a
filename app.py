@@ -92,22 +92,29 @@ fig = px.bar(df_delitos, x='DEPARTAMENTO', y='conteo', color='DELITO', title='De
 st.plotly_chart(fig, key='bar_departamentos')
 fig.update_layout(showlegend=False, height=400)
 
-# Tarjetas
-st.markdown(f"""<h3 style='color:#F2A88D;
-            background-color:#FFF6F5;
-            border: 2px solid #F2A88D; 
-            border-radius: 10px; 
-            padding: 10px; 
-            text-align: center'> Municipio con más delitos: {max_municipio}</h3><br>""", 
-            unsafe_allow_html=True)
 
-st.markdown(f"""<h3 style='color:#F2A88D;
-            background-color:#FFF6F5;
-            border: 2px solid #F2A88D; 
-            border-radius: 10px; 
-            padding: 10px; 
-            text-align: center'> con {max_cantidad_municipio} Reportes</h3><br>""", 
-            unsafe_allow_html=True)
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+
+    # Tarjetas
+    st.markdown(f"""<h3 style='color:#F2A88D;
+                background-color:#FFF6F5;
+                border: 2px solid #F2A88D; 
+                border-radius: 10px; 
+                padding: 10px; 
+                text-align: center'> Municipio con más delitos: {max_municipio}</h3><br>""", 
+                unsafe_allow_html=True)
+
+with col2:  
+
+    st.markdown(f"""<h3 style='color:#F2A88D;
+                background-color:#FFF6F5;
+                border: 2px solid #F2A88D; 
+                border-radius: 10px; 
+                padding: 10px; 
+                text-align: center'> con {max_cantidad_municipio} Reportes</h3><br>""", 
+                unsafe_allow_html=True)
 
 
 st.subheader(f'Municipio con más delitos: {max_municipio} con {max_cantidad_municipio} Reportes')
