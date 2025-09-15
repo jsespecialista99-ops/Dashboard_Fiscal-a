@@ -216,3 +216,4 @@ st.write(f'### Municipio con más delitos: {max_municipio} con {max_cantidad_mun
 
 #st.subheader('Tipo de delito')
 
+# 2
