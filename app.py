@@ -104,8 +104,8 @@ with col1:
                 border-radius: 10px; 
                 padding: 10px; 
                 text-align: center'> Municipio con más delitos: {max_municipio}</h3><br>""", 
-                unsafe_allow_html=True)
-
+                unsafe_allow_html=True
+    )
 with col2:  
 
     st.markdown(f"""<h3 style='color:#F2A88D;
@@ -114,8 +114,79 @@ with col2:
                 border-radius: 10px; 
                 padding: 10px; 
                 text-align: center'> Delitos Reportados<br> {max_cantidad_municipio} </h3><br>""", 
-                unsafe_allow_html=True)
+                unsafe_allow_html=True
+    )
 
+with col3:
+	## Tarjeta 3 - Etapa mas recurrente
+	st.markdown(f"""<h3 style=
+				'color:#A6886D;
+				background-color:#F7EBD6;
+				border: 2px solid #A6886D;
+				border-radius: 10px; padding: 10px;
+				text-align: center'>
+				Etapa mas recurrente<br>{etapa_mas_frecuente} </h3><br>""",
+				unsafe_allow_html=True
+	)
+
+with col4:
+	## Tarjeta 4 - Cantidad de registros de la etapa mas recurrente
+	st.markdown(f"""<h3 style=
+				'color:#A6886D;
+				background-color:#F7EBD6;
+				border: 2px solid #A6886D;
+				border-radius: 10px; padding: 10px;
+				text-align: center'>
+				Procesos en esta Etapa<br>{cant_etapa_mas_frecuente} </h3><br>""",
+				unsafe_allow_html=True
+	)
+
+col5, col6 = st.columns(2)
+
+with col5:
+	st.subheader('Tipo delitos')
+	tipo_delitos = df['DELITO'].value_counts()
+	st.bar_chart(tipo_delitos)
+
+with col6:
+	st.subheader("Distribución por Departamentos")
+	departamento = df['DEPARTAMENTO'].value_counts()
+	fig = px.pie(
+		names=departamento.index,  # Para los nombres de la Torta
+		values=departamento.values # Para los valores de la Torta
+	)
+	fig.update_traces(textposition='outside', textinfo='percent+label')
+	fig.update_layout(showlegend=False, height=350)
+	st.plotly_chart(fig, key="torta_departamentos")
+	
+
+# Selección de dato para visualizar
+cols_grafico = ['DELITO', 'ETAPA', 'FISCAL_ASIGNADO', 'DEPARTAMENTO', 'MUNICIPIO_HECHOS']
+df_grafico = df[cols_grafico]
+
+st.subheader("Seleccione Dato a Visualizar")
+variable = st.selectbox(
+	'Seleccione la variable para el análisis:',
+	options = df_grafico.columns
+)
+
+# st.subheader('Tipo delitos')
+grafico = df_grafico[variable].value_counts()
+st.bar_chart(grafico)
+
+if st.checkbox('Mostrar Matriz de Datos'):
+	st.subheader('Matriz de Datos')
+	st.dataframe(df_grafico)
+
+# Consulta por Fiscal Asignado
+st.header('Consulta por Fiscal Asignado')
+fiscal_consulta = st.selectbox(
+	'Seleccione El Fiscal a Consultar:',
+	options = df['FISCAL_ASIGNADO'].unique()
+)
+
+df_fiscal = df[df['FISCAL_ASIGNADO'] == fiscal_consulta]
+st.dataframe(df_fiscal)
 
 st.subheader(f'Municipio con más delitos: {max_municipio} con {max_cantidad_municipio} Reportes')
 st.subheader(f'{etapa_mas_frecuente} tiene {cant_etapa_mas_frecuente} registros')
